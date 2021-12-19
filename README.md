@@ -6,7 +6,7 @@
 
 ### macOS
 
-Download [.app](https://github.com/ankit-invitae/go-rabbitmq-notify/releases) file and run as any other application.
+Download [.tar.gz](https://github.com/ankit-invitae/go-rabbitmq-notify/releases) file, untar it and run as any other application.
 
 ## RabbitMQ Config file
 

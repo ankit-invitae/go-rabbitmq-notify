@@ -47,3 +47,9 @@ run: bundle-darwin
 tag:
 	git tag -a v$(version) -m "Version $(version)"
 	git push origin --tags
+
+release:
+	cd bin/darwin && \
+		tar -cvzf '$(app).tar.gz' '$(app).app'
+	gh release create v$(version) -n="$(version)" -t="$(version)" 'bin/darwin/$(app).tar.gz'
+	# gh release create v$(version) 'bin/darwin/$(app).tar.gz'
