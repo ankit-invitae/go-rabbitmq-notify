@@ -1,0 +1,47 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"os/exec"
+	"path"
+	"time"
+)
+
+func Logger() {
+	fileName := fmt.Sprintf("logs_%v_*.txt", time.Now().Format("20060102150405"))
+	file, err := os.CreateTemp("", fileName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.SetOutput(file)
+}
+
+func ReadConfig() (*Config, error) {
+	homeDir, _ := os.UserHomeDir()
+
+	b, err := ioutil.ReadFile(path.Join(homeDir, ".rabbitmq.config"))
+	if err != nil {
+		return nil, fmt.Errorf("error reading config file: %v", err)
+	}
+
+	var data Config
+	err = json.Unmarshal(b, &data)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshal config data: %v", err)
+	}
+	return &data, nil
+}
+
+func Notify(message, title string) {
+	osa, err := exec.LookPath("osascript")
+	if err != nil {
+		fmt.Println("Notification is not working:", err)
+	}
+
+	cmd := exec.Command(osa, "-e", `display notification "`+message+`" with title "`+title+`"`)
+	cmd.Run()
+}
