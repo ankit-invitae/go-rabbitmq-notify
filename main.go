@@ -91,11 +91,10 @@ func onReady() {
 	}
 }
 
-func init() {
-	Logger()
-}
-
 func main() {
+	// Setup log file
+	LoggerSetup()
+
 	log.Println("Starting App")
 
 	var err error
@@ -109,7 +108,7 @@ func main() {
 	itemChan = make(chan string, len(config.Queues))
 
 	onExit := func() {
-		log.Println("Finished Quitting")
+		log.Println("Quitting App")
 	}
 
 	systray.Run(onReady, onExit)

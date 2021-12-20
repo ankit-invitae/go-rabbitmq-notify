@@ -8,12 +8,11 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"time"
 )
 
-func Logger() {
-	fileName := fmt.Sprintf("logs_%v_*.txt", time.Now().Format("20060102150405"))
-	file, err := os.CreateTemp("", fileName)
+func LoggerSetup() {
+	homeDir, _ := os.UserHomeDir()
+	file, err := os.Create(path.Join(homeDir, ".rabbitmq.log"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,7 +35,7 @@ func ReadConfig() (*Config, error) {
 	return &data, nil
 }
 
-func Notify(message, title string) {
+func Notify(title, message string) {
 	osa, err := exec.LookPath("osascript")
 	if err != nil {
 		fmt.Println("Notification is not working:", err)
