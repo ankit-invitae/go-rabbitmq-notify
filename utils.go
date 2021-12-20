@@ -44,3 +44,13 @@ func Notify(title, message string) {
 	cmd := exec.Command(osa, "-e", `display notification "`+message+`" with title "`+title+`"`)
 	cmd.Run()
 }
+
+func Alert(title, message string) {
+	osa, err := exec.LookPath("osascript")
+	if err != nil {
+		fmt.Println("Notification is not working:", err)
+	}
+
+	cmd := exec.Command(osa, "-e", `display alert "`+title+`" message "`+message+`" as critical buttons {"Ok"}`)
+	cmd.Run()
+}

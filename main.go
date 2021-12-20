@@ -43,6 +43,10 @@ func callApi(queue Queue) {
 			log.Printf("ERROR: Calling API: %v\n", err)
 			continue
 		}
+		if res.StatusCode == http.StatusUnauthorized {
+			go Alert("RabbitMQ Notify Unauthorized", "Please check if you have access to RabbitMq or if username/password in config file is correct")
+			systray.Quit()
+		}
 
 		var msg RabbitMqMessage
 		resBody, err := io.ReadAll(res.Body)
